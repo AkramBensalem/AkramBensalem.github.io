@@ -25,6 +25,7 @@
     margin: 0;
     padding: 0;
     transition: background-color 0.3s, color 0.3s;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -292,6 +293,12 @@ footer {
         background-color: var(--light-bg);
         border-radius: 4px;
         border: 1px solid var(--border-color);
+        transition: all 0.2s;
+    }
+
+    nav a:active {
+        background-color: var(--accent-color);
+        color: white;
     }
 
     .lang-switch {
