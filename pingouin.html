@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joyeux Anniversaire mon Pingouin !</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            overflow-x: hidden;
+            max-width: none !important;
+        }
+
+        .suspense-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2e3440;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 1.5s ease-out, visibility 1.5s;
+            color: white;
+        }
+
+        .suspense-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .heart-loader {
+            font-size: 50px;
+            color: #ff4081;
+            animation: pulse 1s infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #ad1457;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .penguins-box {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .penguins-container {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+
+        .couple-img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+        }
+
+        .speech-bubble {
+            position: absolute;
+            background: white;
+            border-radius: 15px;
+            padding: 10px 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+            animation: popIn 0.3s forwards;
+            white-space: nowrap;
+            font-weight: bold;
+            color: #ad1457;
+            z-index: 10;
+        }
+
+        #loulou-speech {
+            bottom: 70%;
+            right: 12%;
+        }
+
+        #pingouin-speech {
+            bottom: 70%;
+            left: 18%;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .photo-heart {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 60px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-placeholder {
+            width: 80px;
+            height: 80px;
+            background: #f8bbd0;
+            border: 3px solid white;
+            border-radius: 10px;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .photo-placeholder:hover {
+            z-index: 10;
+            transform: scale(1.5) rotate(0deg) !important;
+        }
+
+        .photo-placeholder i {
+            color: white;
+            font-size: 24px;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #ff4081;
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 20px;
+            transition: 0.3s;
+            z-index: 2100;
+            user-select: none;
+        }
+
+        .modal-nav:hover {
+            color: #ff4081;
+        }
+
+        .modal-prev { left: 10px; }
+        .modal-next { right: 10px; }
+
+        @media (max-width: 600px) {
+            .modal-nav {
+                font-size: 30px;
+                padding: 10px;
+            }
+        }
+
+        /* Heart shape positions for 12 photos */
+        .p1 { transform: translate(-35px, -110px) rotate(-5deg); }
+        .p9 { transform: translate(35px, -110px) rotate(5deg); }
+        .p2 { transform: translate(-105px, -80px) rotate(-15deg); }
+        .p3 { transform: translate(105px, -80px) rotate(15deg); }
+        .p4 { transform: translate(-130px, -10px) rotate(-10deg); }
+        .p5 { transform: translate(130px, -10px) rotate(10deg); }
+        .p10 { transform: translate(-110px, 60px) rotate(-5deg); }
+        .p11 { transform: translate(110px, 60px) rotate(5deg); }
+        .p6 { transform: translate(-70px, 120px) rotate(5deg); }
+        .p7 { transform: translate(70px, 120px) rotate(-5deg); }
+        .p12 { transform: translate(0, 160px); }
+        .p8 { transform: translate(0, 40px); } /* Centre du coeur */
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 40px;
+            line-height: 1.8;
+            color: #4c566a;
+            border: 1px solid #f8bbd0;
+        }
+
+        .btn-back {
+            margin-top: 40px;
+            padding: 10px 25px;
+            background: #ad1457;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-back:hover {
+            background: #880e4f;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 64, 129, 0.2);
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="suspense-overlay" id="overlay">
+        <div class="heart-loader"><i class="fas fa-heart"></i></div>
+        <p>Préparation de la surprise pour mon pingouin...</p>
+        <button id="reveal-btn" style="margin-top: 20px; padding: 10px 20px; cursor: pointer; border-radius: 20px; border: none; background: #ff4081; color: white; font-weight: bold;">Clique ici, Loulou !</button>
+    </div>
+
+    <div class="floating-hearts" id="hearts-container"></div>
+
+    <!-- Photo Modal -->
+    <div id="photo-modal" class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-nav modal-prev" id="prev-btn"><i class="fas fa-chevron-left"></i></div>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-nav modal-next" id="next-btn"><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    <div class="container">
+        <h1>Joyeux Anniversaire, mon Pingouin !</h1>
+
+        <div class="penguins-box">
+            <div class="penguins-container" onclick="startConversation()">
+                <div class="speech-bubble" id="loulou-speech">On s'aime beaucoup</div>
+                <div class="speech-bubble" id="pingouin-speech">Énormément</div>
+                <img src="assets/pingouin/couple.png" alt="Pingouins Loulou et Pingouin" class="couple-img">
+            </div>
+        </div>
+
+        <div class="photo-heart">
+            <div class="photo-placeholder p1"><img src="assets/pingouin/photo1.jpg" alt=""></div>
+            <div class="photo-placeholder p2"><img src="assets/pingouin/photo2.jpg" alt=""></div>
+            <div class="photo-placeholder p3"><img src="assets/pingouin/photo3.jpg" alt=""></div>
+            <div class="photo-placeholder p4"><img src="assets/pingouin/photo4.jpg" alt=""></div>
+            <div class="photo-placeholder p5"><img src="assets/pingouin/photo5.jpg" alt=""></div>
+            <div class="photo-placeholder p6"><img src="assets/pingouin/photo6.jpg" alt=""></div>
+            <div class="photo-placeholder p7"><img src="assets/pingouin/photo7.jpg" alt=""></div>
+            <div class="photo-placeholder p8"><img src="assets/pingouin/photo8.jpg" alt=""></div>
+            <div class="photo-placeholder p9"><img src="assets/pingouin/photo9.jpg" alt=""></div>
+            <div class="photo-placeholder p10"><img src="assets/pingouin/photo10.jpg" alt=""></div>
+            <div class="photo-placeholder p11"><img src="assets/pingouin/photo11.jpg" alt=""></div>
+            <div class="photo-placeholder p12"><img src="assets/pingouin/photo12.jpg" alt=""></div>
+        </div>
+
+        <div class="message-box">
+            <p>Mon cher Pingouin,</p>
+            <p>Déjà deux ans et demi que tu partages ma vie, et chaque jour est une nouvelle aventure à tes côtés. En ce 20 Juin, je voulais te dire à quel point tu es précieux pour moi.</p>
+            <p>Tu es mon pingouin, je suis ton loulou, et ensemble nous formons le plus beau couple. </p>
+            <p>Ils disent que les pingouins choisissent un partenaire pour la vie, et je serai tellement heureux que ça soit toi.
+                Merci pour ton amour, ta patience et tous les moments merveilleux que nous avons partagés.
+            </p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; margin-top: 20px;">Je t'aime, Énormément.</p>
+        </div>
+    </div>
+
+    <script>
+        // Reveal Logic
+        document.getElementById('reveal-btn').addEventListener('click', () => {
+            document.getElementById('overlay').classList.add('hidden');
+            startConversation();
+        });
+
+        // Speech Logic
+        function say(id) {
+            const bubble = document.getElementById(id);
+            bubble.style.display = 'block';
+            setTimeout(() => {
+                bubble.style.display = 'none';
+            }, 1000);
+        }
+
+        function startConversation() {
+            // Right penguin speaks first
+            setTimeout(() => {
+                say('loulou-speech');
+                // Left penguin responds
+                setTimeout(() => {
+                    say('pingouin-speech');
+                }, 2000);
+            }, 1000);
+        }
+
+        // Floating Hearts
+        const container = document.getElementById('hearts-container');
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '<i class="fas fa-heart"></i>';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 300);
+
+        // Modal Logic
+        const modal = document.getElementById('photo-modal');
+        const modalImg = document.getElementById('modal-img');
+        const placeholders = document.querySelectorAll('.photo-placeholder');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        
+        let currentIndex = 0;
+        const images = Array.from(placeholders).map(ph => ph.querySelector('img').src);
+
+        function showImage(index) {
+            if (index < 0) index = images.length - 1;
+            if (index >= images.length) index = 0;
+            currentIndex = index;
+            modalImg.src = images[currentIndex];
+        }
+
+        placeholders.forEach((ph, index) => {
+            ph.addEventListener('click', function() {
+                modal.style.display = "flex";
+                showImage(index);
+            });
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showImage(currentIndex - 1);
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showImage(currentIndex + 1);
+        });
+
+        document.querySelector('.close-modal').onclick = () => modal.style.display = "none";
+        
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display === "flex") {
+                if (e.key === "ArrowLeft") showImage(currentIndex - 1);
+                if (e.key === "ArrowRight") showImage(currentIndex + 1);
+                if (e.key === "Escape") modal.style.display = "none";
+            }
+        });
+
+        // Touch support for swipe
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        modal.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        modal.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleGesture();
+        }, {passive: true});
+
+        function handleGesture() {
+            if (touchendX < touchstartX - 50) showImage(currentIndex + 1);
+            if (touchendX > touchstartX + 50) showImage(currentIndex - 1);
+        }
+    </script>
+</body>
+</html>
