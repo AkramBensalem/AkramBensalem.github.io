@@ -236,7 +236,7 @@
     </section>
 
     <footer>
-        <p>&copy; 2026 Akram BENSALEM. Tous droits réservés.</p>
+        <p>&copy; 2026 Akram BENSALEM. Tous droits réservés. <i class="fab fa-linux secret-penguin" id="secret-penguin" style="cursor: pointer; opacity: 0.5; margin-left: 10px;"></i></p>
     </footer>
 
     <script>
@@ -289,6 +289,16 @@
                     targetSection.classList.add('active');
                 }
             });
+        });
+
+        // Secret Penguin Logic
+        document.getElementById('secret-penguin').addEventListener('click', () => {
+            const pin = prompt('Entrez le code PIN secret :');
+            if (pin === '10-11-2023') {
+                window.location.href = 'pingouin.html';
+            } else if (pin !== null) {
+                alert('Code incorrect, mon pingouin !');
+            }
         });
     </script>
 </body>
