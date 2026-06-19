@@ -234,7 +234,7 @@
     </section>
 
     <footer>
-        <p>&copy; 2026 Akram BENSALEM. All rights reserved. <i class="fab fa-linux secret-penguin" id="secret-penguin" style="cursor: pointer; opacity: 0.5; margin-left: 10px;"></i></p>
+        <p>&copy; 2026 Akram BENSALEM. All rights reserved.</p>
     </footer>
 
     <script>
@@ -287,16 +287,6 @@
                     targetSection.classList.add('active');
                 }
             });
-        });
-
-        // Secret Penguin Logic
-        document.getElementById('secret-penguin').addEventListener('click', () => {
-            const pin = prompt('Enter the secret PIN code:');
-            if (pin === '0620') {
-                window.location.href = 'pingouin.html';
-            } else if (pin !== null) {
-                alert('Incorrect code, my penguin!');
-            }
         });
     </script>
 </body>
