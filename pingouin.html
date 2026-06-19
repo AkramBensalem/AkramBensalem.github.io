@@ -310,6 +310,35 @@
             0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #ff4081;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            opacity: 1;
+            background: #ad1457;
+        }
+
+        .music-control i {
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -366,11 +395,36 @@
         </div>
     </div>
 
+    <audio id="bg-music" src="assets/pingouin/la_folie.mp3" loop></audio>
+    <div id="music-control" class="music-control" style="display: none;">
+        <i class="fas fa-music"></i>
+    </div>
+
     <script>
         // Reveal Logic
         document.getElementById('reveal-btn').addEventListener('click', () => {
             document.getElementById('overlay').classList.add('hidden');
             startConversation();
+            
+            // Music initialization
+            const music = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-control');
+            music.volume = 0.2; // Calm volume
+            music.play().catch(e => console.log("Audio play failed:", e));
+            musicBtn.style.display = 'flex';
+            
+            musicBtn.onclick = () => {
+                if (music.paused) {
+                    music.currentTime = 0; // Rerun from beginning
+                    music.play();
+                    musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+                    musicBtn.style.background = '#ff4081';
+                } else {
+                    music.pause();
+                    musicBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    musicBtn.style.background = '#999';
+                }
+            };
         });
 
         // Speech Logic
